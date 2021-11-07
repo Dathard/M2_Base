@@ -17,7 +17,6 @@ class Notifications extends Action
     public $layoutFactory;
 
     /**
-     * Notifications constructor.
      * @param Context $context
      * @param LayoutFactory $layoutFactory
      */

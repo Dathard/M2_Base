@@ -10,6 +10,13 @@ use Magento\Framework\Module\ModuleListInterface;
 class VersionProvider
 {
     /**
+     * @var array[]
+     */
+    private $cache = [
+        'latest_version' => []
+    ];
+
+    /**
      * @var Data
      */
     private $extensionDataModel;
@@ -45,19 +52,25 @@ class VersionProvider
      */
     public function getLatestVersionByName(string $extensionName)
     {
-        $extensionData = $this->extensionDataModel->getExtensionData($extensionName);
+        if (! array_key_exists('latest_version', $this->cache)
+            || ! array_key_exists($extensionName, $this->cache['latest_version'])) {
+            $extensionData = $this->extensionDataModel->getExtensionData($extensionName);
 
-        if (! $extensionData) {
-            return null;
+            if (! $extensionData) {
+                return null;
+            }
+
+            $latestReleaseData = $this->gitApiService->getLatestRelease($extensionData['repository_name']);
+
+            if(! $latestReleaseData) {
+                return null;
+            }
+
+            $version = str_replace("REL-", '', (string) $latestReleaseData['tag_name']);
+            $this->cache['latest_version'][$extensionName] = $version;
         }
 
-        $latestReleaseData = $this->gitApiService->getLatestRelease($extensionData['repository_name']);
-
-        if(! $latestReleaseData) {
-            return null;
-        }
-
-        return str_replace("REL-", '', (string) $latestReleaseData['tag_name']);
+        return $this->cache['latest_version'][$extensionName];
     }
 
     /**

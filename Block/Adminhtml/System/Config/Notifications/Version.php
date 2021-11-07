@@ -26,7 +26,6 @@ class Version extends Template
     private $versionProvider;
 
     /**
-     * Version constructor.
      * @param ExtensionDataModel $extensionDataModel
      * @param VersionProvider $versionProvider
      * @param Context $context

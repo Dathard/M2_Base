@@ -9,6 +9,13 @@ use Dathard\Base\Service\GitApiService;
 class ChangeLogProvider
 {
     /**
+     * @var array[]
+     */
+    private $cache = [
+        'change_logs' => []
+    ];
+
+    /**
      * @var Data
      */
     private $extensionDataModel;
@@ -36,18 +43,23 @@ class ChangeLogProvider
      */
     public function getChangeLogsByExtensionName(string $extensionName)
     {
-        $extensionData = $this->extensionDataModel->getExtensionData($extensionName);
+        if (! array_key_exists('change_logs', $this->cache)
+            || ! array_key_exists($extensionName, $this->cache['change_logs'])) {
+            $extensionData = $this->extensionDataModel->getExtensionData($extensionName);
 
-        if (! $extensionData) {
-            return null;
+            if (! $extensionData) {
+                return null;
+            }
+
+            $changeLogsData = $this->gitApiService->getReleasesList($extensionData['repository_name']);
+
+            if(! $changeLogsData) {
+                return null;
+            }
+
+            $this->cache['change_logs'][$extensionName] = $changeLogsData;
         }
 
-        $releaseData = $this->gitApiService->getReleasesList($extensionData['repository_name']);
-
-        if(! $releaseData) {
-            return null;
-        }
-
-        return $releaseData;
+        return $this->cache['change_logs'][$extensionName];
     }
 }

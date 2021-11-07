@@ -26,7 +26,6 @@ class GitApiService
     private $clientFactory;
 
     /**
-     * GitApiService constructor.
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
      */
@@ -51,9 +50,7 @@ class GitApiService
             return null;
         }
 
-        $responseContent = $response->getBody()->getContents(); // here you will have the API response in JSON format
-
-        return json_decode($responseContent, true);
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -78,7 +75,6 @@ class GitApiService
      * @param string $uriEndpoint
      * @param array $params
      * @param string $requestMethod
-     *
      * @return Response
      */
     private function doRequest(
