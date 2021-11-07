@@ -1,0 +1,9 @@
+<?php /** @var \Dathard\Base\Block\Adminhtml\System\Config\Messages $block */ ?>
+<div id="messages-section"></div>
+<script type="text/javascript">
+    require([ 'jquery'], function($) {
+        $.get("<?= $block->getRequestUrl() ?>", function(data) {
+            $("#messages-section").html(data.html);
+        });
+    });
+</script>

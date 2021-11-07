@@ -1,0 +1,32 @@
+<?php /** @var \Dathard\Base\Block\Adminhtml\System\Config\Notifications\ChangeLogs $block */ ?>
+<style>
+    .change-logs-list
+    {
+        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #303030;
+    }
+    .change-logs-list .ver
+    {
+        padding: .7rem 1.5rem;
+        border-top: 1px solid #e3e3e3;
+        border-bottom: 1px solid #e3e3e3;
+        background: #f8f8f8;
+    }
+    .change-logs-list .description
+    {
+        line-height: 21px;
+        padding: .7rem 1.5rem;
+    }
+</style>
+
+<div class="change-logs-list">
+    <?php foreach ($block->getChangeLogs() as $changeLog): ?>
+        <?php if ($block->isNewerVersion($changeLog)): ?>
+            <p class="ver"><strong>v<?= $block->getVersion($changeLog); ?></strong> - <strong><?= $block->getPublishedDate($changeLog) ?></strong></p>
+            <div class="description">
+                <?= $block->getChangeDescription($changeLog); ?>
+            </div><br>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>

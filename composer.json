@@ -1,0 +1,20 @@
+{
+    "name": "dathard/base",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Dathard",
+            "email": "dathard@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Dathard\\Base\\": ""
+        }
+    }
+}

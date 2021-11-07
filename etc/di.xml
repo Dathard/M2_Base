@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="DathardExtensionsConfigSchemaLocator" type="Magento\Framework\Config\SchemaLocator">
+        <arguments>
+            <argument name="realPath" xsi:type="string">urn:magento:module:Dathard_Base:etc/extensions.xsd
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="DathardExtensionsConfigReader" type="Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/extensions/extension" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">extensions.xml</argument>
+            <argument name="converter" xsi:type="object">Dathard\Base\Model\Extension\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">DathardExtensionsConfigSchemaLocator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="DathardExtensionsConfigData" type="Magento\Framework\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">DathardExtensionsConfigReader</argument>
+            <argument name="cacheId" xsi:type="string">dathard_extensions</argument>
+        </arguments>
+    </virtualType>
+    <type name="Dathard\Base\Model\Extension\Data">
+        <arguments>
+            <argument name="extensionsConfig" xsi:type="object">DathardExtensionsConfigData</argument>
+            <argument name="generatorPool" xsi:type="object">Magento\Framework\View\Layout\GeneratorPool\Proxy</argument>
+        </arguments>
+    </type>
+</config>
